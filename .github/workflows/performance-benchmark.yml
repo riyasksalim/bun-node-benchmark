@@ -1,4 +1,4 @@
-name: Benchmark Bun.js vs Node.js
+name: Benchmark Bun.js vs Node.js (Windows)
 
 on:
   push:
@@ -8,44 +8,21 @@ on:
 
 jobs:
   benchmark:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: '16' # Specify the Node.js version here
+    - name: Install Git Bash
+      run: |
+        echo "Installing Git Bash..."
+        choco install git
 
-    - name: Run Node.js Performance Test
+    - name: Run setupandrun.sh in Git Bash
+      shell: bash
       run: |
-        echo "Running Node.js performance test..."
-        echo "## Node.js Benchmark" > results.txt
-        node performance-test.js | tee -a results.txt
-
-    - name: Install Bun.js
-      run: |
-        echo "Installing Bun.js..."
-        curl -fsSL https://bun.sh/install | bash
-        echo 'export BUN_INSTALL="$HOME/.bun"' >> $GITHUB_ENV
-        echo 'export PATH="$BUN_INSTALL/bin:$PATH"' >> $GITHUB_ENV
-        source $HOME/.bun/_bun # Source Bun.js installation
-        echo "Bun.js version:"
-        bun --version # Verify that Bun.js is installed
-  
-    - name: Run Bun.js Performance Test
-      run: |
-        echo "Running Bun.js performance test..."
-        source $HOME/.bun/_bun # Ensure Bun.js environment is sourced
-        echo "## Bun.js Benchmark" >> results.txt
-        bun run performance-test.js | tee -a results.txt
-
-    - name: Generate HTML Report
-      run: |
-        echo "Generating HTML report..."
-        node generate-report.js
+        git-bash.exe ./setup-and-run.sh
 
     - name: Upload results.txt as an artifact
       uses: actions/upload-artifact@v4
