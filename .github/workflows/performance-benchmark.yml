@@ -25,18 +25,20 @@ jobs:
         echo "## Node.js Benchmark" > results.txt
         node performance-test.js | tee -a results.txt
 
-    - name: Set up Bun.js
+    - name: Install Bun.js
       run: |
         echo "Installing Bun.js..."
         curl -fsSL https://bun.sh/install | bash
         echo 'export BUN_INSTALL="$HOME/.bun"' >> $GITHUB_ENV
         echo 'export PATH="$BUN_INSTALL/bin:$PATH"' >> $GITHUB_ENV
-        source $GITHUB_ENV
-        bun --version # Verify Bun.js installation
-
+        source $HOME/.bun/_bun # Source Bun.js installation
+        echo "Bun.js version:"
+        bun --version # Verify that Bun.js is installed
+  
     - name: Run Bun.js Performance Test
       run: |
         echo "Running Bun.js performance test..."
+        source $HOME/.bun/_bun # Ensure Bun.js environment is sourced
         echo "## Bun.js Benchmark" >> results.txt
         bun run performance-test.js | tee -a results.txt
 
@@ -45,7 +47,7 @@ jobs:
         echo "Generating HTML report..."
         node generate-report.js
 
-    - name: Upload myResult.txt as an artifact
+    - name: Upload results.txt as an artifact
       uses: actions/upload-artifact@v4
       with:
         name: result-file
