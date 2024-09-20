@@ -27,10 +27,12 @@ jobs:
 
     - name: Set up Bun.js
       run: |
+        echo "Installing Bun.js..."
         curl -fsSL https://bun.sh/install | bash
         echo 'export BUN_INSTALL="$HOME/.bun"' >> $GITHUB_ENV
         echo 'export PATH="$BUN_INSTALL/bin:$PATH"' >> $GITHUB_ENV
         source $GITHUB_ENV
+        bun --version # Verify Bun.js installation
 
     - name: Run Bun.js Performance Test
       run: |
