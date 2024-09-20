@@ -1,0 +1,6 @@
+## Node.js Benchmark
+Execution Time: 709.514ms
+Result: 7453559913819.172
+## Bun.js Benchmark
+Result: 7453559913819.172
+Execution Time: 704.339ms
