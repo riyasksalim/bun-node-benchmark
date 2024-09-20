@@ -14,15 +14,13 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Install Git Bash
-      run: |
-        echo "Installing Git Bash..."
-        choco install git
-
-    - name: Run setupandrun.sh in Git Bash
+    - name: Set up permissions for setupandrun.sh
+      run: chmod +x setup-and-run.sh
       shell: bash
-      run: |
-        git-bash.exe ./setup-and-run.sh
+
+    - name: Run setupandrun.sh
+      shell: bash
+      run: ./setup-and-run.sh
 
     - name: Upload results.txt as an artifact
       uses: actions/upload-artifact@v4
